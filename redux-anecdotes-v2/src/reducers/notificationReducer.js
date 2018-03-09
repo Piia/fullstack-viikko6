@@ -1,6 +1,4 @@
-const initialState = 'This is NOTIFICATION'
-
-const notificationReducer = (state = initialState, action) => {
+const notificationReducer = (state = '', action) => {
   switch (action.type) {
   case 'CREATE_NOTIFICATION':
     return action.data

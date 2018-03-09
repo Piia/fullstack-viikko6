@@ -1,17 +1,32 @@
 import React from 'react'
-import Notification from './components/Notification'
-import Filter from './components/Filter'
-import AnecdoteForm from './components/AnecdoteForm'
-import AnecdoteList from './components/AnecdoteList'
+import { connect } from 'react-redux'
+import anecdoteService from './services/anecdotes'
+import { anecdoteInitialization } from './reducers/anecdoteReducer'
+import ConnectedNotification from './components/Notification'
+import ConnectedFilter from './components/Filter'
+import ConnectedAnecdoteForm from './components/AnecdoteForm'
+import ConnectedAnecdoteList from './components/AnecdoteList'
 
-const App = ({ store }) => (
-  <div>
-    <h1>Programming anecdotes</h1>
-    <Notification store={store} />
-    <Filter store={store} />
-    <AnecdoteList store={store} />
-    <AnecdoteForm store={store} />
-  </div>
-)
+class App extends React.Component {
+	componentDidMount = async () => {
+		const anecdotes = await anecdoteService.getAll()
+		this.props.anecdoteInitialization(anecdotes)
+	}
 
-export default App
+	render() {
+		return (
+		  <div>
+		    <h1>Programming anecdotes</h1>
+		    <ConnectedNotification />
+		    <ConnectedFilter />
+		    <ConnectedAnecdoteList />
+		    <ConnectedAnecdoteForm />
+		  </div>
+		)
+	}
+}
+
+export default connect(
+  null,
+  { anecdoteInitialization }
+)(App)
